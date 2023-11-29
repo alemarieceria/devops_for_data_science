@@ -1,0 +1,66 @@
+---
+title: "Model"
+format:
+  html:
+    code-fold: true
+---
+
+## Create Python Virtual Environment
+
+```{bash create_venv}
+# Navigate to the project directory (adjust the path as necessary)
+cd "/h/My Drive/devops_for_data_science"
+
+# Activate virtual environment
+"/h/My Drive/devops_for_data_science/dev_ops_for_data_science/Scripts/activate"
+
+# Install packages
+# pip install palmerpenguins pandas numpy scikit-learn
+```
+
+## Load Libraries
+
+```{python libraries}
+from palmerpenguins import penguins
+from pandas import get_dummies
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn import preprocessing
+```
+
+## Get Data
+
+```{python penguin_data}
+df = penguins.load_penguins().dropna()
+df.head(5)
+```
+
+## Build Model
+
+Set target and explanatory variables:
+
+```{python set_vars}
+X = get_dummies(df[['bill_length_mm', 'species', 'sex']], drop_first = True)
+y = df['body_mass_g']
+```
+
+Create linear regression model:
+
+```{python lr_model}
+model = LinearRegression().fit(X, y)
+```
+
+## Evaluate Model
+
+```{python model_eval}
+print(f"R^2 {model.score(X,y)}")
+print(f"Intercept {model.intercept_}")
+print(f"Columns {X.columns}")
+print(f"Coefficients {model.coef_}")
+```
+
+## Capture Dependencies
+
+```{bash}
+pip freeze > requirements.txt
+```

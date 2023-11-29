@@ -1,0 +1,61 @@
+---
+title: "Penguins EDA"
+format:
+  html:
+    code-fold: true
+---
+
+## Create R Virtual Environment
+
+```{r}
+# Activate the virtual environment for Windows
+renv::init()
+```
+
+## Load Libraries
+
+```{r libraries}
+library(palmerpenguins)
+library(dplyr)
+library(ggplot2)
+```
+
+## Penguin Size and Mass by Sex and Species
+
+Load dataframe:
+
+```{r penguins_dataframe}
+df <- penguins
+df
+```
+
+Summarize data:
+
+```{r size_and_mass_by_sex_and_species}
+df %>%
+  group_by(species, sex) %>%
+  summarise(
+    across(
+      where(is.numeric), 
+      \(x) mean(x, na.rm = TRUE)
+      )
+    ) %>%
+  knitr::kable()
+```
+
+## Penguin Size vs Mass by Species
+
+Create visualization:
+
+```{r}
+df %>%
+  ggplot(aes(x = bill_length_mm, y = body_mass_g, color = species)) +
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+
+## Take a Snapshot
+
+```{r}
+renv::snapshot()
+```
